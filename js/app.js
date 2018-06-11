@@ -130,9 +130,9 @@ function successAjax(xhttp) {
     objDataContainer.classList.add('dataContainer');
     objPic.setAttribute('src', `img/${oneSpaceship.image}`);
     objPic.setAttribute('alt', '');
-    for (var j = 0; j < Object.keys(oneSpaceship).length; j++) {
-      objDataContainer.innerText = '';
-      objDataContainer.innerText += oneSpaceship.j;
+    objDataContainer.innerText = '';
+    for (var j in oneSpaceship) {
+      objDataContainer.innerHTML += `${j}: ${oneSpaceship[j]}<br>`;
     }
     objContainerForOneSpaceship.appendChild(objPicContainer);
     objPicContainer.appendChild(objPic);
@@ -148,6 +148,70 @@ function successAjax(xhttp) {
   }
 
 
+  //5. feladat
+  function showStats(allSpaceships) {
+    var objStatsContainer = document.createElement('div');
+    var objStatsA = document.createElement('p')
+    var objStatsB = document.createElement('p')
+    var objStatsC = document.createElement('p')
+    var objStatsD = document.createElement('p')
+
+    objStatsContainer.classList.add('statsContainer');
+    objStatsA.classList.add('statsA');
+    objStatsA.classList.add('statsB');
+    objStatsA.classList.add('statsC');
+    objStatsA.classList.add('statsD');
+  }
+
+  function statsA(allSpaceships) {
+    var crewOne = [];
+    for (var i = 0; i < allSpaceships.length; i++) {
+      if (parseInt(allSpaceships[i].crew) === 1) {
+        crewOne.push(allSpaceships[i]);
+      }
+    }
+    return crewOne.length;
+  }
+
+  function statsB(allSpaceships) {
+    var maxCargo = allSpaceships[0];
+    for (var i = 1; i < allSpaceships.length; i++) {
+      if (parseInt(allSpaceships[i].cargo_capacity) > parseInt(maxCargo.cargo_capacity)) {
+        maxCargo = allSpaceships[i];
+      }
+    }
+    return maxCargo.model;
+  }
+
+  function statsC(allSpaceships) {
+    var sumPassengers = 0;
+    for (var i = 0; i < allSpaceships.length; i++) {
+      if (allSpaceships[i].passengers) {
+        sumPassengers += parseInt(allSpaceships[i].passengers);
+      }
+    }
+    return sumPassengers;
+  }
+
+  function statsD(allSpaceships) {
+    var longestSpaceship = allSpaceships[0];
+    for (var i = 1; i < allSpaceships.length; i++) {
+      if (allSpaceships[i].lengthiness) {
+        if (parseInt(allSpaceships[0].lengthiness) > parseInt(longestSpaceship.lengthiness)) {
+          longestSpaceship = allSpaceships[i];
+        }
+      }
+    }
+    return longestSpaceship.image;
+  }
+
+
+
+
+
+
+
+
 
   //függvényhívások
   //sortByCostInCreditsAsc(data);
@@ -158,23 +222,33 @@ function successAjax(xhttp) {
   var dataSortedFiltered = deleteSpaceshipWhereConsumablesInNull(dataSorted);
   console.log(dataSortedFiltered);
   /*
-    console.log(data);
-    console.log(dataSorted);
-    console.log(dataSortedFiltered);*/
+  console.log(data);
+  console.log(dataSorted);
+  console.log(dataSortedFiltered);*/
 
-  /*var dataSortedFilteredUnknown = everyNullValuesToUnknown(dataSortedFiltered);
-  console.log(dataSortedFilteredUnknown);
+  var dataSortedFilteredUnknown = everyNullValuesToUnknown(dataSortedFiltered);
+  /*console.log(dataSortedFilteredUnknown);
   console.log(dataSortedFiltered[0].cost_in_credits);
   console.log(dataSortedFilteredUnknown[0].cost_in_credits);
   console.log(dataSortedFilteredUnknown.length);
   console.log(Object.keys(dataSortedFiltered[0])[0]);
   console.log(dataSortedFiltered[0].id);
-*/
-  //drawOneSpaceship(dataSortedFiltered);
+  */
 
-  drawAllSpaceships(dataSortedFiltered);
+  //drawOneSpaceship(dataSortedFiltered[46]);
+  console.log(dataSortedFiltered[46]);
+  console.log(dataSortedFiltered[46].id);
+  console.log(Object.keys(dataSortedFiltered[46]));
+  console.log(Object.keys(dataSortedFiltered[46]).length);
+  console.log(Object.keys(dataSortedFiltered[46])[0]);
+
+  drawAllSpaceships(dataSortedFilteredUnknown);
 
 
+  console.log(statsA(dataSortedFilteredUnknown));
+  console.log(statsB(dataSortedFilteredUnknown));
+  console.log(statsC(dataSortedFilteredUnknown));
+  console.log(statsD(dataSortedFilteredUnknown));
 
 
 

@@ -29,11 +29,14 @@ div {
 .shapceship-list {
   width: 100%;
   background: #0b88c5;
-  overflow: auto
+  overflow: auto;
 }
 
 .containerForOneSpaceship {
   display: inline-block;
+  width: 30%;
+  vertical-align: text-top;
+  border: 1px solid black;
 }
 
 .one-spaceship {
