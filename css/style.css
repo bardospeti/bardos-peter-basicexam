@@ -36,12 +36,13 @@ div {
   display: inline-block;
   width: 30%;
   vertical-align: text-top;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .one-spaceship {
   width: 100%;
   background: #000;
+  color: white;
 }
 
 .searchbar {

@@ -134,6 +134,7 @@ function successAjax(xhttp) {
     for (var j in oneSpaceship) {
       objDataContainer.innerHTML += `${j}: ${oneSpaceship[j]}<br>`;
     }
+
     objContainerForOneSpaceship.appendChild(objPicContainer);
     objPicContainer.appendChild(objPic);
     objContainerForOneSpaceship.appendChild(objDataContainer);
@@ -151,17 +152,36 @@ function successAjax(xhttp) {
   //5. feladat
   function showStats(allSpaceships) {
     var objStatsContainer = document.createElement('div');
+    var objStatsNull = document.createElement('h2')
     var objStatsA = document.createElement('p')
     var objStatsB = document.createElement('p')
     var objStatsC = document.createElement('p')
-    var objStatsD = document.createElement('p')
+    var objStatsDContainer = document.createElement('div')
+    var objStatsDPic = document.createElement('img')
 
+    objStatsNull.classList.add('statsH2');
+    objStatsNull.innerHTML = 'Statistics';
     objStatsContainer.classList.add('statsContainer');
     objStatsA.classList.add('statsA');
-    objStatsA.classList.add('statsB');
-    objStatsA.classList.add('statsC');
-    objStatsA.classList.add('statsD');
+    objStatsA.innerHTML = `Egy fős (crew = 1) legénységgel rendelkező hajók darabszáma: ${statsA(allSpaceships)}`;
+    objStatsB.classList.add('statsB');
+    objStatsB.innerHTML = `A legnagyobb cargo_capacity-vel rendelkező hajó neve (model): ${statsB(allSpaceships)}`;
+    objStatsC.classList.add('statsC');
+    objStatsC.innerHTML = `Az összes hajó utasainak (passengers) összesített száma: ${statsC(allSpaceships)}`;
+    objStatsDContainer.classList.add('statsDContainer');
+    objStatsDContainer.innerHTML = 'A leghosszabb(lengthiness) hajó képe: ';
+    objStatsDContainer.appendChild(objStatsDPic);
+    objStatsDPic.setAttribute('src', `img/${statsD(allSpaceships)}`);
+    objStatsDPic.setAttribute('alt', 'picture not found');
+
+    objStatsContainer.appendChild(objStatsNull);
+    objStatsContainer.appendChild(objStatsA);
+    objStatsContainer.appendChild(objStatsB);
+    objStatsContainer.appendChild(objStatsC);
+    objStatsContainer.appendChild(objStatsDContainer);
+    objSpaceshipsContainer.appendChild(objStatsContainer);
   }
+
 
   function statsA(allSpaceships) {
     var crewOne = [];
@@ -204,6 +224,38 @@ function successAjax(xhttp) {
     }
     return longestSpaceship.image;
   }
+
+
+  //6. feladat
+  //épp nem maradt idő befejezni :(
+  var searchButton = document.querySelector('#search-button');
+  searchButton.setAttribute('type', 'button');
+  searchButton.addEventListener('click', searchByModel, false);
+  var searchText = document.querySelector('#search-text');
+
+  objRightDiv = document.querySelector('.one-spaceship');
+
+  function drawResult(oneSpaceship) {
+    objResultContainer = document.createElement('div');
+    objResultContainer.innerHTML = '';
+    for (var i in oneSpaceship) {
+      objResultContainer.innerHTML += `${i}: ${oneSpaceship[i]}<br>`;
+    }
+    objRightDiv.appendChild(objResultContainer);
+  }
+
+  function searchByModel() {
+    var searchString = searchText.value;
+    var result = '';
+    for (var i = 0; i < dataSortedFilteredUnknown.length; i++) {
+      if (dataSortedFilteredUnknown[i].model.toLowerCase().indexOf(searchString.toLowerCase()) != -1) {
+        result = dataSortedFilteredUnknown[i];
+        drawResult(result);
+        break;
+      }
+    }
+  }
+
 
 
 
@@ -249,6 +301,9 @@ function successAjax(xhttp) {
   console.log(statsB(dataSortedFilteredUnknown));
   console.log(statsC(dataSortedFilteredUnknown));
   console.log(statsD(dataSortedFilteredUnknown));
+
+
+  showStats(dataSortedFilteredUnknown);
 
 
 
