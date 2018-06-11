@@ -45,7 +45,7 @@ AND cost_in_credits BETWEEN 10000 AND 200000;
 * és meg van adva (nem NULL), és nem 0 a passengers, és a cargo_capacity értéke
 SELECT model AS 'Megnevezés', manufacturer AS 'Gyártó' 
 FROM `transport` 
-WHERE (crew BETWEEN 1 AND 5) AND (passengers NOT IN (null, 0)) AND (cargo_capacity NOT IN (null, 0)) 
+WHERE (crew BETWEEN 1 AND 5) AND (passengers NOT IN ('null', 0)) AND (cargo_capacity NOT IN ('null', 0)) 
 GROUP BY crew
 LIMIT 3;
 
