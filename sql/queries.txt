@@ -26,6 +26,13 @@ AND crew = 1
 AND (manufacturer LIKE 'A%' OR manufacturer LIKE 'B%' OR manufacturer LIKE 'C%');
 
 
+b) csak a crew = 1 (Józsi kiegészítése alapján)
+SELECT model AS 'Típus' 
+FROM `transport` 
+WHERE crew = 1 
+AND (manufacturer LIKE 'A%' OR manufacturer LIKE 'B%' OR manufacturer LIKE 'C%');
+
+
 4. Kérdezd le 
 * azon hajók minden adatát, 
 * melynek gyártójának(manufacturer) nevében szerepel a Corporation szó, 
@@ -45,8 +52,11 @@ AND cost_in_credits BETWEEN 10000 AND 200000;
 * és meg van adva (nem NULL), és nem 0 a passengers, és a cargo_capacity értéke
 SELECT model AS 'Megnevezés', manufacturer AS 'Gyártó' 
 FROM `transport` 
-WHERE (crew BETWEEN 1 AND 5) AND (passengers NOT IN ('null', 0)) AND (cargo_capacity NOT IN ('null', 0)) 
+WHERE (passengers NOT IN ('null', 0)) 
+AND (cargo_capacity NOT IN ('null', 0))
 GROUP BY crew
+HAVING (crew BETWEEN 1 AND 5)
+ORDER BY model
 LIMIT 3;
 
 

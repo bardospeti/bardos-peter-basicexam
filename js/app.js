@@ -36,7 +36,8 @@ function successAjax(xhttp) {
 
 
   //függvények
-  //önmagában a null értékek miatt nem tökéletesen ment, ezért van szükség a következő fv-re
+  //1.feladat
+  //önmagában a null értékek miatt nem tökéletesen ment (sql szerint a Halálcsillag a legdrágább, mégsem azt hozta ki), ezért van szükség a következő fv-re, ahol meghívom ezt
   function sortByCostInCreditsAsc(dataArray) {
     var i = dataArray.length;
     var swap = false;
@@ -55,7 +56,8 @@ function successAjax(xhttp) {
   }
 
 
-  function tempDelWhereCostInCreditsIsNull(dataArray) {
+  //1. feladat folytatása
+  function temporarilySeparateWhereCostInCreditsIsNullThenSortAndConcat(dataArray) {
     var nullArray = [];
     var notNullArray = [];
     for (var i = 0; i < dataArray.length; i++) {
@@ -65,35 +67,113 @@ function successAjax(xhttp) {
         notNullArray.push(data[i]);
       }
     }
-    console.log(nullArray.length);
-    console.log(notNullArray.length);
+    console.log(`nullArray hossza: ${nullArray.length}`);
+    console.log(`notNullArray hossza: ${notNullArray.length}`);
 
     var sortedNotNullArray = sortByCostInCreditsAsc(notNullArray);
-    console.log(notNullArray);
+    //console.log(notNullArray);
 
-    dataArray = nullArray.concat(sortedNotNullArray);
-    console.log(dataArray);
+    return nullArray.concat(sortedNotNullArray);
   }
 
 
-
-
+  //2. feladat
   function deleteSpaceshipWhereConsumablesInNull(dataArray) {
+    //var count = 0;
+    var consumablesIsNotNull = [];
     for (var i = 0; i < dataArray.length; i++) {
-      if (!dataArray[i].consumables) {
-        dataArray.splice(i, 1);
+      if (dataArray[i].consumables) {
+        consumablesIsNotNull.push(dataArray[i]);
       }
+      //count++;
+    }
+    dataArray = consumablesIsNotNull;
+    delete dataArray;
+    //console.log(count);
+    //console.log(consumablesIsNotNull);
+    return dataArray;
+  }
+
+
+  //3. feladat
+  //nem megy!!!
+  function everyNullValuesToUnknown(dataArray) {
+    var count = 0;
+    for (var i = 0; i < dataArray.length; i++) {
+      for (var j = 0; j < Object.keys(dataArray[i]).length; j++) {
+        if (dataArray[i].j == null) {
+          dataArray[i].j = 'unknown';
+          count++;
+        }
+      }
+    }
+    console.log(dataArray);
+    console.log(count);
+    return dataArray;
+  }
+
+
+  //4. feladat
+
+  //egy űrhajó megjelenítése
+  var objSpaceshipsContainer = document.querySelector('.shapceship-list');
+
+  function drawOneSpaceship(oneSpaceship) {
+    var objContainerForOneSpaceship = document.createElement('div');
+    var objPicContainer = document.createElement('div');
+    var objPic = document.createElement('img');
+    var objDataContainer = document.createElement('div');
+
+    objContainerForOneSpaceship.classList.add('containerForOneSpaceship');
+    objPicContainer.classList.add('picContainer');
+    objPic.classList.add('pic');
+    objDataContainer.classList.add('dataContainer');
+    objPic.setAttribute('src', `img/${oneSpaceship.image}`);
+    objPic.setAttribute('alt', '');
+    for (var j = 0; j < Object.keys(oneSpaceship).length; j++) {
+      objDataContainer.innerText = '';
+      objDataContainer.innerText += oneSpaceship.j;
+    }
+    objContainerForOneSpaceship.appendChild(objPicContainer);
+    objPicContainer.appendChild(objPic);
+    objContainerForOneSpaceship.appendChild(objDataContainer);
+    objSpaceshipsContainer.appendChild(objContainerForOneSpaceship);
+  }
+
+
+  function drawAllSpaceships(allSpaceships) {
+    for (var i = 0; i < allSpaceships.length; i++) {
+      drawOneSpaceship(allSpaceships[i]);
     }
   }
 
 
+
   //függvényhívások
   //sortByCostInCreditsAsc(data);
-  console.log(data);
-  console.log(data);
-  tempDelWhereCostInCreditsIsNull(data);
+  //console.log(data);
+  var dataSorted = temporarilySeparateWhereCostInCreditsIsNullThenSortAndConcat(data);
+  console.log(dataSorted);
 
-  //deleteSpaceshipWhereConsumablesInNull(data);
+  var dataSortedFiltered = deleteSpaceshipWhereConsumablesInNull(dataSorted);
+  console.log(dataSortedFiltered);
+  /*
+    console.log(data);
+    console.log(dataSorted);
+    console.log(dataSortedFiltered);*/
+
+  /*var dataSortedFilteredUnknown = everyNullValuesToUnknown(dataSortedFiltered);
+  console.log(dataSortedFilteredUnknown);
+  console.log(dataSortedFiltered[0].cost_in_credits);
+  console.log(dataSortedFilteredUnknown[0].cost_in_credits);
+  console.log(dataSortedFilteredUnknown.length);
+  console.log(Object.keys(dataSortedFiltered[0])[0]);
+  console.log(dataSortedFiltered[0].id);
+*/
+  //drawOneSpaceship(dataSortedFiltered);
+
+  drawAllSpaceships(dataSortedFiltered);
+
 
 
 
